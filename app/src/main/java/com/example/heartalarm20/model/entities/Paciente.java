@@ -11,5 +11,4 @@ public class Paciente {
     private List<String> contactosEmergencia;
     private Parametros parametros;
 
-
 }
