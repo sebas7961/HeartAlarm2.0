@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,11 +7,45 @@
         android:id="@+id/loginFragment"
         android:name="com.example.heartalarm20.view.fragments.LoginFragment"
         android:label="Login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_opcionesFragment"
+            app:destination="@id/opcionesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/opcionesFragment"
+        android:name="com.example.heartalarm20.view.fragments.OpcionesFragment"
+        android:label="Opciones"
+        tools:layout="@layout/fragment_opciones">
+        <!-- Navegación hacia MonitoreoFragment -->
+        <action
+            android:id="@+id/action_opcionesFragment_to_monitoreoFragment"
+            app:destination="@id/monitoreoFragment" />
+        <action
+            android:id="@+id/action_opcionesFragment_to_parametrosFragment"
+            app:destination="@id/parametrosFragment" />
+        <action
+            android:id="@+id/action_opcionesFragment_to_gestionPacientesFragment"
+            app:destination="@id/gestionarPacientesFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/monitoreoFragment"
         android:name="com.example.heartalarm20.view.fragments.MonitoreoFragment"
         android:label="Monitoreo"
         tools:layout="@layout/fragment_monitoreo" />
+
+    <fragment
+        android:id="@+id/parametrosFragment"
+        android:name="com.example.heartalarm20.view.fragments.ParametrosFragment"
+        android:label="Parámetros"
+        tools:layout="@layout/fragment_parametros" />
+    <fragment
+        android:id="@+id/gestionarPacientesFragment"
+        android:name="com.example.heartalarm20.view.fragments.GestionarPacientesFragment"
+        android:label="Gestionar Pacientes"
+        tools:layout="@layout/fragment_gestionarpacientes" />
+
+
 </navigation>
