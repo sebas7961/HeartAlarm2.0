@@ -23,30 +23,30 @@ public class ParametrosFragment extends Fragment {
 
         EditText minPulsoConfig = view.findViewById(R.id.minPulseInput);
         EditText maxPulsoConfig = view.findViewById(R.id.maxPulseInput);
-        Button saveButton = view.findViewById(R.id.saveButton);
+        Button btnGuardar = view.findViewById(R.id.saveButton);
 
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("HeartAlarmPrefs", Context.MODE_PRIVATE);
-        int minPulse = sharedPreferences.getInt("minPulse", 60);
-        int maxPulse = sharedPreferences.getInt("maxPulse", 100);
+        int minPulse = sharedPreferences.getInt("minPulso", 60);
+        int maxPulse = sharedPreferences.getInt("maxPulso", 100);
         minPulsoConfig.setText(String.valueOf(minPulse));
         maxPulsoConfig.setText(String.valueOf(maxPulse));
 
-        saveButton.setOnClickListener(v -> {
-            String minPulseText = minPulsoConfig.getText().toString().trim();
-            String maxPulseText = maxPulsoConfig.getText().toString().trim();
+        btnGuardar.setOnClickListener(v -> {
+            String minPulsoText = minPulsoConfig.getText().toString().trim();
+            String maxPulsoText = maxPulsoConfig.getText().toString().trim();
 
-            if (minPulseText.isEmpty() || maxPulseText.isEmpty()) {
-                Toast.makeText(getActivity(), "Por favor, complete ambos campos", Toast.LENGTH_SHORT).show();
+            if (minPulsoText.isEmpty() || maxPulsoText.isEmpty()) {
+                Toast.makeText(getActivity(), "Debe Completar ambos campos", Toast.LENGTH_SHORT).show();
             } else {
-                int minPulseValue = Integer.parseInt(minPulseText);
-                int maxPulseValue = Integer.parseInt(maxPulseText);
+                int minValorPulso = Integer.parseInt(minPulsoText);
+                int maxValorPulso = Integer.parseInt(maxPulsoText);
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("minPulse", minPulseValue);
-                editor.putInt("maxPulse", maxPulseValue);
+                editor.putInt("minPulso", minValorPulso);
+                editor.putInt("maxPulso", maxValorPulso);
                 editor.apply();
 
-                Toast.makeText(getActivity(), "Configuración guardada: Min: " + minPulseValue + ", Max: " + maxPulseValue, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Configuración guardada: Min: " + minValorPulso + ", Max: " + maxValorPulso, Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -18,7 +18,6 @@
         android:name="com.example.heartalarm20.view.fragments.OpcionesFragment"
         android:label="Opciones"
         tools:layout="@layout/fragment_opciones">
-        <!-- Navegación hacia MonitoreoFragment -->
         <action
             android:id="@+id/action_opcionesFragment_to_monitoreoFragment"
             app:destination="@id/monitoreoFragment" />
@@ -28,6 +27,9 @@
         <action
             android:id="@+id/action_opcionesFragment_to_gestionPacientesFragment"
             app:destination="@id/gestionarPacientesFragment" />
+        <action
+            android:id="@+id/action_opcionesFragment_to_numeroEmergenciaFragment"
+            app:destination="@id/numeroEmergenciaFragment" />
     </fragment>
 
     <fragment
@@ -46,6 +48,11 @@
         android:name="com.example.heartalarm20.view.fragments.GestionarPacientesFragment"
         android:label="Gestionar Pacientes"
         tools:layout="@layout/fragment_gestionarpacientes" />
+    <fragment
+        android:id="@+id/numeroEmergenciaFragment"
+        android:name="com.example.heartalarm20.view.fragments.NumeroDeEmergenciaFragment"
+        android:label="Numero Emergencia"
+        tools:layout="@layout/fragment_numeroemergencia" />
 
 
 </navigation>

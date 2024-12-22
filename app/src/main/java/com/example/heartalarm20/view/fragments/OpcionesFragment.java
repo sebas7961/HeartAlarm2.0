@@ -30,14 +30,15 @@ public class OpcionesFragment extends Fragment {
         Button btnMonitoreo = view.findViewById(R.id.btn_monitoreo);
         Button btnGestionarPacientes = view.findViewById(R.id.btn_gestionar_pacientes);
         Button btnParametros = view.findViewById(R.id.btn_parametros);
+        Button btnNEmergencia = view.findViewById(R.id.btn_NEmergencia);
 /*
         authViewModel.getRol().observe(getViewLifecycleOwner(), rol -> {
             if ("Paciente".equals(rol)) {
                 roleText.setText("Opciones para Paciente");
-                btnGestionarPacientes.setVisibility(View.GONE); // Ocultar botón específico del vigilante
+                btnGestionarPacientes.setVisibility(View.GONE);
             } else if ("Vigilante".equals(rol)) {
                 roleText.setText("Opciones para Vigilante");
-                btnMonitoreo.setVisibility(View.GONE); // Ocultar botón específico del paciente
+                btnMonitoreo.setVisibility(View.GONE);
             }
         });
 
@@ -53,6 +54,10 @@ public class OpcionesFragment extends Fragment {
         //Opciones a g. pacientes
         btnGestionarPacientes.setOnClickListener(v ->
                 Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_gestionPacientesFragment)
+        );
+        //Opciones a NumeroEmergencia
+        btnNEmergencia.setOnClickListener(v ->
+                Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_numeroEmergenciaFragment)
         );
 
         return view;
