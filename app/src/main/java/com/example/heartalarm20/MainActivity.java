@@ -16,17 +16,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button button = findViewById(R.id.btn_prueba);
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
         }
-        button.setOnClickListener(v -> {
-            navController.navigate(R.id.opcionesFragment);
-            button.setVisibility(View.INVISIBLE);
-        });
+
     }
 
     @Override
