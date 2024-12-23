@@ -1,0 +1,38 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/roleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Opciones"
+        android:textSize="20sp"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btn_monitoreo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Monitoreo" />
+
+    <Button
+        android:id="@+id/btn_gestionar_pacientes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Gestionar Pacientes" />
+    <Button
+        android:id="@+id/btn_parametros"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Parámetros" />
+    <Button
+        android:id="@+id/btn_NEmergencia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Número de Emergencia" />
+
+</LinearLayout>
