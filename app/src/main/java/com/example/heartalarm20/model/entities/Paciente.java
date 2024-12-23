@@ -10,11 +10,11 @@ public class Paciente {
     private short edad;
     private float peso;
     private enum gradoMonitoreo{Bajo, Medio, Alto;}
-    private List<String> contactosEmergencia;
+    private List<ContactoEmergencia> contactosEmergencia;
     private Parametros parametros;
 
 
-    public Paciente(String nombrePaciente, String dni, short edad, float peso, List<String> contactosEmergencia, Parametros parametros) {
+    public Paciente(String nombrePaciente, String dni, short edad, float peso, List<ContactoEmergencia> contactosEmergencia, Parametros parametros) {
         this.nombrePaciente = nombrePaciente;
         this.dni = dni;
         this.edad = edad;
@@ -55,15 +55,15 @@ public class Paciente {
         this.peso = peso;
     }
 
-    public List<String> getContactosEmergencia() {
+    public List<ContactoEmergencia> getContactosEmergencia() {
         return contactosEmergencia;
     }
 
-    public String getContactoEmergencia(int index){
+    public ContactoEmergencia getContactoEmergencia(int index){
         return contactosEmergencia.get(index);
     }
 
-    public void setContactosEmergencia(List<String> contactosEmergencia) {
+    public void setContactosEmergencia(List<ContactoEmergencia> contactosEmergencia) {
         this.contactosEmergencia = contactosEmergencia;
     }
 
