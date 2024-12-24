@@ -8,6 +8,8 @@ public class SharedViewModel  extends ViewModel {
     private short parametros;
     private final MutableLiveData<Short> monitoreoPulso = new MutableLiveData<>();
 
+
+
     public short getParametros() {
         return parametros;
     }
