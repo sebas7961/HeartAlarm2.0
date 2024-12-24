@@ -50,9 +50,9 @@
         tools:layout="@layout/fragment_gestionarpacientes" />
     <fragment
         android:id="@+id/numeroEmergenciaFragment"
-        android:name="com.example.heartalarm20.view.fragments.NumeroDeEmergenciaFragment"
+        android:name="com.example.heartalarm20.view.fragments.ContactosDeEmergenciaFragment"
         android:label="Numero Emergencia"
-        tools:layout="@layout/fragment_numeroemergencia" />
+        tools:layout="@layout/fragment_contactosemergencia" />
 
 
 </navigation>

@@ -40,17 +40,17 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     //test rama
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.4")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.4")
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.livedata.ktx)
 
-    implementation("androidx.databinding:databinding-runtime:7.0.0")
+    implementation(libs.databinding.runtime)
 
-    implementation("com.google.firebase:firebase-firestore:24.6.0")
+    implementation(libs.google.firebase.firestore)
 
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation(libs.core.ktx)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)

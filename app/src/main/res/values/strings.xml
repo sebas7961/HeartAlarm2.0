@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">HeartAlarm2.0</string>
+    <string name="dcrp_fbt_agregar_contacto">Agregar contacto</string>
+    <string-array name="prioridades">
+        <item>Alta</item>
+        <item>Media</item>
+        <item>Baja</item>
+    </string-array>
 </resources>
