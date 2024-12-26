@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="top"
     android:orientation="vertical"
     android:padding="16dp"
-    android:gravity="center">
+    android:textAlignment="gravity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="150dp"
+        android:gravity="center"
+        android:text="Ingrese rangos de frecuencias"
+        android:textSize="35sp" />
 
     <EditText
         android:id="@+id/minPulseInput"
@@ -18,14 +28,16 @@
         android:id="@+id/maxPulseInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:hint="Frecuencia máxima"
-        android:inputType="number"
-        android:layout_marginTop="16dp" />
+        android:inputType="number" />
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Guardar Configuración"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/rojoAlarm"
+        android:text="Guardar Configuración" />
+
 </LinearLayout>

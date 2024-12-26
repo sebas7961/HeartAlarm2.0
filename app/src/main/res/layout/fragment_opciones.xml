@@ -1,7 +1,7 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center">
 
@@ -9,30 +9,56 @@
         android:id="@+id/roleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Opciones"
-        android:textSize="20sp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/rojoAlarm"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:shadowColor="#000000"
+        android:text="¡Heart Alarm!"
+        android:textColor="#000000"
+        android:textSize="34sp" />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/heartbeat_animation"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:lottie_rawRes="@raw/latidoHeartAlarm"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true" />
 
     <Button
         android:id="@+id/btn_monitoreo"
-        android:layout_width="match_parent"
+        android:layout_width="240dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/rojoAlarm"
         android:layout_height="wrap_content"
         android:text="Monitoreo" />
 
     <Button
         android:id="@+id/btn_gestionar_pacientes"
-        android:layout_width="match_parent"
+        android:layout_width="240dp"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/rojoAlarm"
         android:layout_height="wrap_content"
         android:text="Gestionar Pacientes" />
     <Button
         android:id="@+id/btn_parametros"
-        android:layout_width="match_parent"
+        android:layout_width="240dp"
+        android:layout_marginBottom="4dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/rojoAlarm"
         android:text="Parámetros" />
     <Button
         android:id="@+id/btn_NEmergencia"
-        android:layout_width="match_parent"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/rojoAlarm"
         android:text="Número de Emergencia" />
+    <Button
+        android:id="@+id/btn_ConectarDispositivo"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:backgroundTint="#009688"
+        android:text="Conectar Dispositivo" />
 
 </LinearLayout>
