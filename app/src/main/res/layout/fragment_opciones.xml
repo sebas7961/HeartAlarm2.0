@@ -20,7 +20,7 @@
         android:id="@+id/heartbeat_animation"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        app:lottie_rawRes="@raw/latidoHeartAlarm"
+        app:lottie_rawRes="@raw/alarmfinal"
         app:lottie_loop="true"
         app:lottie_autoPlay="true" />
 
