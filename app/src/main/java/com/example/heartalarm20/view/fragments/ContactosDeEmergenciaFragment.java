@@ -17,8 +17,11 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,20 +29,19 @@ import com.example.heartalarm20.MainActivity;
 import com.example.heartalarm20.R;
 import com.example.heartalarm20.model.entities.ContactoEmergencia;
 import com.example.heartalarm20.view.adapters.ContactoAdapter;
+import com.example.heartalarm20.viewmodel.ContactosViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ContactosDeEmergenciaFragment extends Fragment implements ContactoAdapter.OnContactoInteractionListener{
+public class ContactosDeEmergenciaFragment extends Fragment{
 
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private ActivityResultLauncher<Intent> contactPickerLauncher;
 
     private RecyclerView recyclerView;
     private ContactoAdapter adapter;
-    private List<ContactoEmergencia> contactos;
-
+    private static final ContactosViewModel contactosVM = new ContactosViewModel();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,19 +68,7 @@ public class ContactosDeEmergenciaFragment extends Fragment implements ContactoA
                     }
                 }
         );
-    }
 
-    @Override
-    public void onDeleteContact(int position) {
-        contactos.remove(position);
-        adapter.notifyItemRemoved(position);
-    }
-
-    @Override
-    public void onPriorityChanged(int position, String newPriority) {
-        ContactoEmergencia contacto = contactos.get(position);
-        contacto.setPrioridad(newPriority);
-        // Aquí puedes agregar lógica para actualizar la base de datos
     }
 
     @Override
@@ -93,49 +83,73 @@ public class ContactosDeEmergenciaFragment extends Fragment implements ContactoA
             requestContactsPermission();
         });
 
-
         //Configurar RecyclerView
-        recyclerView = view.findViewById(R.id.rv_contactos);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.requireContext()));
-
-        contactos = new ArrayList<>();
-        contactos.add(new ContactoEmergencia("1", "Juan Pérez", "+123456789"));
-        contactos.add(new ContactoEmergencia("2", "Ana López", "+987654321"));
-
-        adapter = new ContactoAdapter(this.requireContext(), contactos, this);
-        recyclerView.setAdapter(adapter);
+//        recyclerView = view.findViewById(R.id.rv_contactos);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this.requireContext()));
+//
+//        contactosVM = new ViewModelProvider(this).get(ContactosViewModel.class);
+//
+//        contactosVM.getContactosList().observe(getViewLifecycleOwner(), contactos -> {
+//            adapter = new ContactoAdapter(this.requireContext(), contactos, new ContactoAdapter.OnContactoInteractionListener() {
+//                @Override
+//                public void onDeleteContact(int position) {
+//                    if(contactosVM.getContactosList().getValue().get(position).getPrioridad().equals("Alta")){
+//                        Toast.makeText(ContactosDeEmergenciaFragment.this.requireContext(), "Debe asignar la prioridad alta a uno de sus contactos.", Toast.LENGTH_SHORT).show();
+//                    }
+//                    contactosVM.eliminarContacto(position);
+//                }
+//
+//                @Override
+//                public void onPriorityChanged(int position, String newPriority) {
+////                    List<ContactoEmergencia> contactoEmergenciaList = contactosVM.getContactosList().getValue();
+////                    ContactoEmergencia contacto = contactoEmergenciaList.get(position);
+////                    if(contacto.getPrioridad().equals("Principal")){
+////                        Toast.makeText(ContactosDeEmergenciaFragment.this.requireContext(), "Primero debe asignar a otro contacto como principal.", Toast.LENGTH_SHORT).show();
+////                    }
+////                    if(newPriority.equals("Principal")){
+////                        List<ContactoEmergencia> contactoEmergenciasAlto = contactoEmergenciaList.stream().filter(contactoEmergencia -> contactoEmergencia.getPrioridad().equals("Principal")).collect(Collectors.toList());
+////                        if(!contactoEmergenciasAlto.isEmpty()){
+////                            Toast.makeText(ContactosDeEmergenciaFragment.this.requireContext(), "Se reasignó el contacto principal", Toast.LENGTH_SHORT).show();
+////                        }
+////                    }
+//                    //manejar tarea asíncrona
+//                    contactosVM.actualizarContacto(position, newPriority);
+//                }
+//            });
+//            recyclerView.setAdapter(adapter);
+//        });
 
         return view;
     }
 
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_contactosemergencia, container, false);
-//
-//        FloatingActionButton fbt_add_contacto = view.findViewById(R.id.fbt_agregarcontacto);
-//
-//        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("HeartAlarmPrefs", Context.MODE_PRIVATE);
-//        String numeroGuardado = sharedPreferences.getString("numeroEmergencia", "");
-//        numeroEmergencia.setText(numeroGuardado);
-//
-//        fbt_add_contacto.setOnClickListener(v -> {
-//            String nuevoNumeroContacto = numeroEmergencia.getText().toString().trim();
-//
-//            if (nuevoNumeroContacto.isEmpty()) {
-//                Toast.makeText(getActivity(), "Debe ingresar un número de emergencia", Toast.LENGTH_SHORT).show();
-//            } else {
-//                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                editor.putString("numeroEmergencia", nuevoNumeroContacto);
-//                editor.apply();
-//
-//                Toast.makeText(getActivity(), "Número de emergencia guardado: " + nuevoNumeroContacto, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        return view;
-//    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        recyclerView = view.findViewById(R.id.rv_contactos);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        adapter = new ContactoAdapter(requireContext(), new ArrayList<>(), new ContactoAdapter.OnContactoInteractionListener() {
+            @Override
+            public void onDeleteContact(int position) {
+                contactosVM.eliminarContacto(position);
+            }
+
+            @Override
+            public void onPriorityChanged(int position, String newPriority) {
+                contactosVM.actualizarContacto(position, newPriority);
+            }
+        });
+
+        recyclerView.setAdapter(adapter);
+
+        contactosVM.getContactosList().observe(getViewLifecycleOwner(), contactos -> {
+            adapter.updateContactList(contactos); // Método que actualiza la lista en el Adapter
+        });
+    }
+
+
+    //Métodos para obtener contactos desde el gestor de contactos nativo
     private void requestContactsPermission() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -160,11 +174,10 @@ public class ContactosDeEmergenciaFragment extends Fragment implements ContactoA
 
         if (cursor != null && cursor.moveToFirst()) {
             id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
-            name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
             cursor.close();
         }
-
-        // Obtener número de teléfono
+        String idAux = id;
+        // Obtener número y nombre de contacto
         Cursor phoneCursor = requireActivity().getContentResolver().query(
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 new String[]{
@@ -180,19 +193,26 @@ public class ContactosDeEmergenciaFragment extends Fragment implements ContactoA
             phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
             name = phoneCursor.getString(phoneCursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             phoneCursor.close();
-            contactoEmergencia = new ContactoEmergencia(id, phoneNumber, name);
+            contactoEmergencia = new ContactoEmergencia(idAux, phoneNumber, name);
         }
-
         // Guardar en la base de datos
-        saveContactToDatabase(contactoEmergencia);
+        contactosVM.agregarContacto(contactoEmergencia);
     }
 
-
-    private void saveContactToDatabase(ContactoEmergencia contactoEmergencia) {
-        if(contactoEmergencia!=null){
-
-        }
-
+    @Override
+    public void onResume(){
+        super.onResume();
+//        ContactoAdapter contactoAdapter=new ContactoAdapter(this.requireContext(), contactosVM.getContactosList().getValue(), new ContactoAdapter.OnContactoInteractionListener() {
+//            @Override
+//            public void onDeleteContact(int position) {
+//
+//            }
+//
+//            @Override
+//            public void onPriorityChanged(int position, String newPriority) {
+//
+//            }
+//        });
+//        recyclerView.setAdapter(contactoAdapter);
     }
-
 }

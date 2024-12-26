@@ -99,4 +99,11 @@ public class ContactoAdapter extends RecyclerView.Adapter<ContactoAdapter.Contac
             ibDelete = itemView.findViewById(R.id.ib_delete);
         }
     }
+
+    public void updateContactList(List<ContactoEmergencia> newContactList) {
+        this.contactos.clear();
+        this.contactos.addAll(newContactList);
+        notifyDataSetChanged();
+    }
+
 }

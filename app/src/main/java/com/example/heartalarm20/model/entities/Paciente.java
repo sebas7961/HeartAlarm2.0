@@ -9,18 +9,20 @@ public class Paciente {
     private String dni;
     private short edad;
     private float peso;
+    private float estatura;
     private enum gradoMonitoreo{Bajo, Medio, Alto;}
     private List<ContactoEmergencia> contactosEmergencia;
     private Parametros parametros;
 
 
-    public Paciente(String nombrePaciente, String dni, short edad, float peso, List<ContactoEmergencia> contactosEmergencia, Parametros parametros) {
+    public Paciente(String nombrePaciente, String dni, short edad, float peso, float estatura, List<ContactoEmergencia> contactosEmergencia, Parametros parametros) {
         this.nombrePaciente = nombrePaciente;
         this.dni = dni;
         this.edad = edad;
         this.peso = peso;
         this.contactosEmergencia = contactosEmergencia;
         this.parametros = parametros;
+        this.estatura = estatura;
     }
 
     public String getNombrePaciente() {
@@ -53,6 +55,14 @@ public class Paciente {
 
     public void setPeso(float peso) {
         this.peso = peso;
+    }
+
+    public float getEstatura() {
+        return estatura;
+    }
+
+    public void setEstatura(float estatura) {
+        this.estatura = estatura;
     }
 
     public List<ContactoEmergencia> getContactosEmergencia() {
