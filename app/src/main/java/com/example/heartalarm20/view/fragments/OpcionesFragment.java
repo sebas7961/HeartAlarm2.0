@@ -33,6 +33,7 @@ public class OpcionesFragment extends Fragment {
         Button btnGestionarPacientes = view.findViewById(R.id.btn_gestionar_pacientes);
         Button btnParametros = view.findViewById(R.id.btn_parametros);
         Button btnNEmergencia = view.findViewById(R.id.btn_NEmergencia);
+        Button btnPrueba = view.findViewById(R.id.btn_prueba);
 /*
         authViewModel.getRol().observe(getViewLifecycleOwner(), rol -> {
             if ("Paciente".equals(rol)) {
@@ -64,6 +65,12 @@ public class OpcionesFragment extends Fragment {
         btnNEmergencia.setOnClickListener(v ->
                Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_numeroEmergenciaFragment)
         );
+
+        btnNEmergencia.setOnClickListener(v ->
+                Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_numeroEmergenciaFragment)
+        );
+
+        btnPrueba.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_bluetoothtestFragment));
 
         return view;
     }

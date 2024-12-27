@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_opcionesFragment_to_numeroEmergenciaFragment"
             app:destination="@id/numeroEmergenciaFragment" />
+        <action
+            android:id="@+id/action_opcionesFragment_to_bluetoothtestFragment"
+            app:destination="@id/bluetoothTestFragment" />
     </fragment>
 
     <fragment
@@ -52,7 +55,17 @@
         android:id="@+id/numeroEmergenciaFragment"
         android:name="com.example.heartalarm20.view.fragments.ContactosDeEmergenciaFragment"
         android:label="Numero Emergencia"
+<<<<<<< HEAD
         tools:layout="@layout/fragment_contactosemergencia" />
+=======
+        tools:layout="@layout/fragment_numeroemergencia" />
+    <fragment
+        android:id="@+id/bluetoothTestFragment"
+        android:name="com.example.heartalarm20.view.fragments.BluetoothTestFragment"
+        android:label="BluetoothTestFragment"
+        tools:layout="@layout/fragment_bluetoothtest"
+        />
+>>>>>>> ceae80e885c6080a9b8d42534bcdad8153db5e5a
 
 
 </navigation>

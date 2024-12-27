@@ -4,12 +4,44 @@
 
     <uses-feature
         android:name="android.hardware.telephony"
+<<<<<<< HEAD
         android:required="false" />
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.CALL_PHONE"/>
 
+=======
+        android:required="false" /> <!-- Permisos para Android 11 (API 30) y versiones anteriores -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+
+    <!-- Permisos para Android 12 (API 31) y superiores -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_CONNECT"
+        android:required="true" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:required="true" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADVERTISE"
+        android:required="false" />
+
+    <!-- Permisos de Ubicación -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Permiso para servicios en primer plano -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+
+    <!-- Permiso para llamadas (en caso de alerta crítica) -->
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+>>>>>>> ceae80e885c6080a9b8d42534bcdad8153db5e5a
     <application
         android:name=".MyApp"
         android:allowBackup="true"
@@ -34,6 +66,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".services.BluetoothService"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice" />
     </application>
 
 </manifest>
