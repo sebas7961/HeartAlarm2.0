@@ -5,4 +5,6 @@
         <item>Principal</item>
         <item>Secundario</item>
     </string-array>
+    <string name="bt_call">Llamar</string>
+    <string name="bt_false_alarm">Falsa alarma</string>
 </resources>

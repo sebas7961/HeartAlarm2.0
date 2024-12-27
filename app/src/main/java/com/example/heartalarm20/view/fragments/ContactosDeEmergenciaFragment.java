@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +22,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.heartalarm20.MainActivity;
 import com.example.heartalarm20.R;
 import com.example.heartalarm20.model.entities.ContactoEmergencia;
 import com.example.heartalarm20.view.adapters.ContactoAdapter;
@@ -42,6 +41,8 @@ public class ContactosDeEmergenciaFragment extends Fragment{
     private RecyclerView recyclerView;
     private ContactoAdapter adapter;
     private static final ContactosViewModel contactosVM = new ContactosViewModel();
+    private String lastPriority  = null;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,69 +83,46 @@ public class ContactosDeEmergenciaFragment extends Fragment{
         fbt_add_contacto.setOnClickListener(v -> {
             requestContactsPermission();
         });
-
-        //Configurar RecyclerView
-//        recyclerView = view.findViewById(R.id.rv_contactos);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this.requireContext()));
-//
-//        contactosVM = new ViewModelProvider(this).get(ContactosViewModel.class);
-//
-//        contactosVM.getContactosList().observe(getViewLifecycleOwner(), contactos -> {
-//            adapter = new ContactoAdapter(this.requireContext(), contactos, new ContactoAdapter.OnContactoInteractionListener() {
-//                @Override
-//                public void onDeleteContact(int position) {
-//                    if(contactosVM.getContactosList().getValue().get(position).getPrioridad().equals("Alta")){
-//                        Toast.makeText(ContactosDeEmergenciaFragment.this.requireContext(), "Debe asignar la prioridad alta a uno de sus contactos.", Toast.LENGTH_SHORT).show();
-//                    }
-//                    contactosVM.eliminarContacto(position);
-//                }
-//
-//                @Override
-//                public void onPriorityChanged(int position, String newPriority) {
-////                    List<ContactoEmergencia> contactoEmergenciaList = contactosVM.getContactosList().getValue();
-////                    ContactoEmergencia contacto = contactoEmergenciaList.get(position);
-////                    if(contacto.getPrioridad().equals("Principal")){
-////                        Toast.makeText(ContactosDeEmergenciaFragment.this.requireContext(), "Primero debe asignar a otro contacto como principal.", Toast.LENGTH_SHORT).show();
-////                    }
-////                    if(newPriority.equals("Principal")){
-////                        List<ContactoEmergencia> contactoEmergenciasAlto = contactoEmergenciaList.stream().filter(contactoEmergencia -> contactoEmergencia.getPrioridad().equals("Principal")).collect(Collectors.toList());
-////                        if(!contactoEmergenciasAlto.isEmpty()){
-////                            Toast.makeText(ContactosDeEmergenciaFragment.this.requireContext(), "Se reasignó el contacto principal", Toast.LENGTH_SHORT).show();
-////                        }
-////                    }
-//                    //manejar tarea asíncrona
-//                    contactosVM.actualizarContacto(position, newPriority);
-//                }
-//            });
-//            recyclerView.setAdapter(adapter);
-//        });
-
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        contactosVM.setContext(this.requireContext());
 
         recyclerView = view.findViewById(R.id.rv_contactos);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        adapter = new ContactoAdapter(requireContext(), new ArrayList<>(), new ContactoAdapter.OnContactoInteractionListener() {
+        adapter = new ContactoAdapter(requireContext(), new ArrayList<>());
+
+        adapter.setListener(new ContactoAdapter.OnContactoInteractionListener() {
             @Override
             public void onDeleteContact(int position) {
+                if(contactosVM.getContactosList().getValue().get(position).getPrioridad().equals("Principal")){
+                    Toast.makeText(ContactosDeEmergenciaFragment.this.requireContext(), "Primero asigne un nuevo contacto principal", Toast.LENGTH_SHORT).show();
+                    Log.e("SelectedItem", "NO se hace el acmio, problema del toast");
+                    return;
+                }
                 contactosVM.eliminarContacto(position);
             }
 
             @Override
             public void onPriorityChanged(int position, String newPriority) {
-                contactosVM.actualizarContacto(position, newPriority);
+                if(lastPriority==null){
+                    contactosVM.actualizarContacto(position, newPriority);
+                } else {
+                    Log.e("SelectedItem", "NO se hace el acmio, problema del toast");
+                    Toast.makeText(ContactosDeEmergenciaFragment.this.requireContext(), "Primero debe asignar otro contacto como principal", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         recyclerView.setAdapter(adapter);
 
         contactosVM.getContactosList().observe(getViewLifecycleOwner(), contactos -> {
-            adapter.updateContactList(contactos); // Método que actualiza la lista en el Adapter
+            //actualizar la lista en el adapter
+            adapter.updateContactList(contactos);
         });
     }
 
@@ -202,17 +180,5 @@ public class ContactosDeEmergenciaFragment extends Fragment{
     @Override
     public void onResume(){
         super.onResume();
-//        ContactoAdapter contactoAdapter=new ContactoAdapter(this.requireContext(), contactosVM.getContactosList().getValue(), new ContactoAdapter.OnContactoInteractionListener() {
-//            @Override
-//            public void onDeleteContact(int position) {
-//
-//            }
-//
-//            @Override
-//            public void onPriorityChanged(int position, String newPriority) {
-//
-//            }
-//        });
-//        recyclerView.setAdapter(contactoAdapter);
     }
 }

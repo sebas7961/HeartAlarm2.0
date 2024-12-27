@@ -22,7 +22,7 @@ public class ContactoAdapter extends RecyclerView.Adapter<ContactoAdapter.Contac
 
     private final List<ContactoEmergencia> contactos;
     private final Context context;
-    private final OnContactoInteractionListener listener;
+    private OnContactoInteractionListener listener;
 
     // Interfaz para manejar eventos de interacción
     public interface OnContactoInteractionListener {
@@ -30,10 +30,13 @@ public class ContactoAdapter extends RecyclerView.Adapter<ContactoAdapter.Contac
         void onPriorityChanged(int position, String newPriority);
     }
 
-    public ContactoAdapter(Context context, List<ContactoEmergencia> contactos, OnContactoInteractionListener listener) {
+    public void setListener(OnContactoInteractionListener listener) {
+        this.listener = listener;
+    }
+
+    public ContactoAdapter(Context context, List<ContactoEmergencia> contactos) {
         this.context = context;
         this.contactos = contactos;
-        this.listener = listener;
     }
 
     @NonNull

@@ -1,5 +1,6 @@
 package com.example.heartalarm20.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.heartalarm20.R;
+import com.example.heartalarm20.view.activities.CallDialogActivity;
 import com.example.heartalarm20.viewmodel.AuthViewModel;
 
 public class OpcionesFragment extends Fragment {
@@ -52,12 +54,15 @@ public class OpcionesFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_monitoreoFragment)
         );
         //Opciones a g. pacientes
-        btnGestionarPacientes.setOnClickListener(v ->
-                Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_gestionPacientesFragment)
+        btnGestionarPacientes.setOnClickListener(v ->{
+                    Intent intent = new Intent(this.requireContext(), CallDialogActivity.class);
+                    startActivity(intent);
+                }
+               // Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_gestionPacientesFragment)
         );
         //Opciones a NumeroEmergencia
         btnNEmergencia.setOnClickListener(v ->
-                Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_numeroEmergenciaFragment)
+               Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_numeroEmergenciaFragment)
         );
 
         return view;
