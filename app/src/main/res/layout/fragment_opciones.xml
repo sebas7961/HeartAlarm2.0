@@ -61,4 +61,10 @@
         android:backgroundTint="#009688"
         android:text="Conectar Dispositivo" />
 
+    <Button
+        android:id="@+id/btn_prueba"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Prueba" />
+
 </LinearLayout>

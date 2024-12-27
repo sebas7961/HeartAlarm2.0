@@ -1,5 +1,6 @@
 package com.example.heartalarm20.view.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.heartalarm20.R;
+import com.example.heartalarm20.view.activities.CallDialogActivity;
 import com.example.heartalarm20.viewmodel.AuthViewModel;
 
 public class OpcionesFragment extends Fragment {
@@ -31,6 +33,7 @@ public class OpcionesFragment extends Fragment {
         Button btnGestionarPacientes = view.findViewById(R.id.btn_gestionar_pacientes);
         Button btnParametros = view.findViewById(R.id.btn_parametros);
         Button btnNEmergencia = view.findViewById(R.id.btn_NEmergencia);
+        Button btnPrueba = view.findViewById(R.id.btn_prueba);
 /*
         authViewModel.getRol().observe(getViewLifecycleOwner(), rol -> {
             if ("Paciente".equals(rol)) {
@@ -52,13 +55,22 @@ public class OpcionesFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_monitoreoFragment)
         );
         //Opciones a g. pacientes
-        btnGestionarPacientes.setOnClickListener(v ->
-                Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_gestionPacientesFragment)
+        btnGestionarPacientes.setOnClickListener(v ->{
+                    Intent intent = new Intent(this.requireContext(), CallDialogActivity.class);
+                    startActivity(intent);
+                }
+               // Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_gestionPacientesFragment)
         );
         //Opciones a NumeroEmergencia
         btnNEmergencia.setOnClickListener(v ->
+               Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_numeroEmergenciaFragment)
+        );
+
+        btnNEmergencia.setOnClickListener(v ->
                 Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_numeroEmergenciaFragment)
         );
+
+        btnPrueba.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_opcionesFragment_to_bluetoothtestFragment));
 
         return view;
     }

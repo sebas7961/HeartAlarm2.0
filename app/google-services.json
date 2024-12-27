@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "805316543999",
+    "project_id": "heartalarm-2fa22",
+    "storage_bucket": "heartalarm-2fa22.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805316543999:android:65f6d03807030e76d113ca",
+        "android_client_info": {
+          "package_name": "com.example.heartalarm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4tSMEtSX74pSkSx3jq43-Ntkkor0SYYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805316543999:android:2375f8cdc53ed8dbd113ca",
+        "android_client_info": {
+          "package_name": "com.example.heartalarm20"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4tSMEtSX74pSkSx3jq43-Ntkkor0SYYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
