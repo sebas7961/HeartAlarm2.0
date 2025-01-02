@@ -20,51 +20,24 @@
         android:id="@+id/heartbeat_animation"
         android:layout_width="300dp"
         android:layout_height="300dp"
+        android:layout_marginBottom="70dp"
         app:lottie_rawRes="@raw/alarmfinal"
         app:lottie_loop="true"
         app:lottie_autoPlay="true" />
-
     <Button
-        android:id="@+id/btn_monitoreo"
+        android:id="@+id/btn_GestionarPacientes"
         android:layout_width="240dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:backgroundTint="@color/rojoAlarm"
-        android:layout_height="wrap_content"
-        android:text="Monitoreo" />
-
-    <Button
-        android:id="@+id/btn_gestionar_pacientes"
-        android:layout_width="240dp"
-        android:layout_marginBottom="4dp"
-        android:backgroundTint="@color/rojoAlarm"
-        android:layout_height="wrap_content"
         android:text="Gestionar Pacientes" />
-    <Button
-        android:id="@+id/btn_parametros"
-        android:layout_width="240dp"
-        android:layout_marginBottom="4dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/rojoAlarm"
-        android:text="Parámetros" />
-    <Button
-        android:id="@+id/btn_NEmergencia"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:backgroundTint="@color/rojoAlarm"
-        android:text="Número de Emergencia" />
     <Button
         android:id="@+id/btn_ConectarDispositivo"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:backgroundTint="#009688"
+        android:layout_marginBottom="90dp"
+        android:backgroundTint="@color/verdeBoton"
         android:text="Conectar Dispositivo" />
 
-    <Button
-        android:id="@+id/btn_prueba"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Prueba" />
 
 </LinearLayout>

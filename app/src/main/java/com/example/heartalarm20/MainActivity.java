@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+    //Metodo de redireccionamiento luego del Logeo parte Renatin
 
     @Override
     public boolean onSupportNavigateUp() {
