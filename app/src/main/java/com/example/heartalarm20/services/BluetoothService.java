@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
@@ -22,6 +24,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.heartalarm20.R;
+import com.example.heartalarm20.view.activities.CallDialogActivity;
 import com.example.heartalarm20.viewmodel.SharedViewModel;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -181,7 +184,7 @@ public class BluetoothService extends Service {
 
     private void startListeningForData() {
         if (bluetoothSocket != null) {
-            bluetoothReceiverThread = new BluetoothReceiverThread(bluetoothSocket);
+            bluetoothReceiverThread = new BluetoothReceiverThread(bluetoothSocket, this);
             bluetoothReceiverThread.start();
         }
     }
@@ -200,12 +203,16 @@ public class BluetoothService extends Service {
         Log.d(TAG, "Bluetooth Service destroyed");
     }
 
+
+
     private class BluetoothReceiverThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final InputStream mmInStream;
+        private final Context mContext;
 
-        public BluetoothReceiverThread(BluetoothSocket socket) {
+        public BluetoothReceiverThread(BluetoothSocket socket, Context context) {
             mmSocket = socket;
+            mContext = context;
             InputStream tmpIn = null;
 
             try {
@@ -253,21 +260,20 @@ public class BluetoothService extends Service {
                     return;
                 }
 
-                // 🔔 Caso 1: Alerta detectada
                 if (data.contains("ALERTA: ")) {
                     String bpm = data.replace("ALERTA: ", "").trim();
                     mainHandler.post(() -> {
                         if (sharedViewModel != null) {
                             sharedViewModel.setAlerta(bpm);
                         }
-                        //createNotification("¡Alerta de pulso anormal!", bpm);
+                        mainHandler.post(() -> showCallDialog(bpm));
+                        createNotification(data);
                         playAlertSound();
                     });
                     Log.d(TAG, "Alerta detectada: " + bpm);
                     return;
                 }
 
-                // 📊 Caso 2: Promedio de BPM detectado
                 if (data.startsWith("Average BPM: ")) {
                     String bpmString = data.split("\n")[0].replaceAll("[^0-9]", "").trim();
                     try {
@@ -283,7 +289,6 @@ public class BluetoothService extends Service {
                     return;
                 }
 
-                // 📶 Caso 3: Señal detectada
                 if (data.contains("S: ")) {
                     String signalString = data.split("\n")[0].replaceAll("[^0-9]", "").trim();
                     if (sharedViewModel != null) {
@@ -293,11 +298,41 @@ public class BluetoothService extends Service {
                     return;
                 }
 
-                // ⚠️ Caso 4: Datos desconocidos
                 Log.w(TAG, "Datos desconocidos recibidos: " + data);
 
             } catch (Exception e) {
                 Log.e(TAG, "Error al procesar los datos entrantes: " + data, e);
+            }
+        }
+
+        private void showCallDialog(String data) {
+            Intent dialogIntent = new Intent(mContext, CallDialogActivity.class);
+            dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            dialogIntent.putExtra("pulso", data);
+            mContext.startActivity(dialogIntent);
+        }
+
+        private void createNotification(String data) {
+            Intent intent = new Intent(BluetoothService.this, CallDialogActivity.class);
+            intent.putExtra("pulso", data);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                    BluetoothService.this,
+                    0,
+                    intent,
+                    PendingIntent.FLAG_IMMUTABLE
+            );
+            NotificationCompat.Builder notification = new NotificationCompat.Builder(BluetoothService.this, "BluetoothServiceChannel")
+                    .setContentTitle("Alerta de riesgo")
+                    .setContentText("Se ha detectado un pulso anormal: " + data)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setSmallIcon(R.drawable.baseline_monitor_heart_24).setContentIntent(pendingIntent) // Asocia el PendingIntent
+                    .setAutoCancel(true);
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            if (notificationManager != null) {
+                notificationManager.notify(2, notification.build());
             }
         }
 

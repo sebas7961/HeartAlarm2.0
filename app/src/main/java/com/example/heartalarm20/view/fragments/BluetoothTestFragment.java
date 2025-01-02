@@ -151,6 +151,14 @@ public class BluetoothTestFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         if (isServiceBound) {
+            isServiceBound = false;
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (isServiceBound) {
             requireActivity().unbindService(serviceConnection);
             isServiceBound = false;
         }

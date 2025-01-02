@@ -1,5 +1,6 @@
 package com.example.heartalarm20;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,15 +10,20 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.heartalarm20.services.BluetoothService;
 import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent serviceIntent = new Intent(this, BluetoothService.class);
+        startService(serviceIntent);
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
