@@ -32,37 +32,25 @@ android {
 }
 
 dependencies {
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.activity)
-    implementation(libs.constraintlayout)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    //test rama
-        // Dependencias básicas
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.activity)
-    implementation(libs.constraintlayout)
+    // Firebase libraries con versiones compatibles
+    implementation ("com.google.firebase:firebase-firestore:24.6.0")
+    implementation ("com.google.firebase:firebase-database:20.2.1")
+    implementation ("com.google.firebase:firebase-messaging:23.2.1")
 
+    // Otras dependencias
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(libs.activity)
+    implementation(libs.constraintlayout)
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.4")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.4")
-
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
-
     implementation("androidx.databinding:databinding-runtime:7.0.0")
-
-    implementation("com.google.firebase:firebase-firestore:24.6.0")
-
+    implementation("com.airbnb.android:lottie:5.2.0")
     implementation("androidx.core:core-ktx:1.12.0")
-
-    implementation(libs.firebase.database)
-    implementation(libs.firebase.messaging)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation ("com.airbnb.android:lottie:5.2.0")
 }

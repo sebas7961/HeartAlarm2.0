@@ -23,7 +23,7 @@ public class LoginFragment extends Fragment {
         Button btnPrueba = view.findViewById(R.id.btn_prueba);
 
         btnPrueba.setOnClickListener(v ->
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_opcionesFragment)
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_pacienteActivity)
         );
 
         return view;

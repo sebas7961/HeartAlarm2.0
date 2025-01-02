@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.example.heartalarm20.model.entities.ContactoEmergencia;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
