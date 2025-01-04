@@ -53,8 +53,8 @@ public class SharedViewModel extends ViewModel {
         }
     }
 
-    public Short getMonitoreoPulso() {
-        return _monitoreoPulso.getValue();
+    public LiveData<Short> getMonitoreoPulso() {
+        return _monitoreoPulso;
     }
 
     public void setAlerta(String mensaje) {
@@ -83,8 +83,8 @@ public class SharedViewModel extends ViewModel {
         }
     }
 
-    public String getSignalStrength() {
-        return _signalStrength.getValue();
+    public LiveData<String> getSignalStrength() {
+        return _signalStrength;
     }
 
     public void setParametrosESP(String parametros) {

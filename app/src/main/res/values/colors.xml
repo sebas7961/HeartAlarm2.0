@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="rojoAlarm">#EC1F2F</color>
     <color name="verdeBoton">#009688</color>
+    <color name="VerdeEKG">#00FF7F</color>
 </resources>
