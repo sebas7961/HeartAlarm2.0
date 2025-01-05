@@ -1,5 +1,7 @@
 package com.example.heartalarm20.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -49,7 +51,10 @@ public class SharedViewModel extends ViewModel {
 
     public void actualizarMonitoreoPulso(Short datoLeido) {
         if (datoLeido != null) {
+            Log.d("SharedViewModel", "Actualizando pulso: " + datoLeido);
             _monitoreoPulso.postValue(datoLeido);
+        } else {
+            Log.e("SharedViewModel", "Dato de pulso es nulo");
         }
     }
 

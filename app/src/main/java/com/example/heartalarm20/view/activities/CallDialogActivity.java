@@ -49,21 +49,19 @@ public class CallDialogActivity extends AppCompatActivity {
         getWindow().setLayout((int)(ancho*0.85), (int)(alto*0.4));
 
         Button bt_call = findViewById(R.id.bt_call);
-
-        bt_call.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                makePhoneCall();
-            }
-        });
-
         Button bt_false_alarm = findViewById(R.id.bt_false_alarm);
-        bt_false_alarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CallDialogActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+
+        // Recibir datos del Intent
+        Intent intent = getIntent();
+        String pulso = intent.getStringExtra("pulso");
+        if (pulso != null) {
+            Toast.makeText(this, "Pulso recibido: " + pulso, Toast.LENGTH_SHORT).show();
+        }
+
+        bt_call.setOnClickListener(view -> makePhoneCall());
+        bt_false_alarm.setOnClickListener(view -> {
+            Intent backIntent = new Intent(CallDialogActivity.this, MainActivity.class);
+            startActivity(backIntent);
         });
     }
 

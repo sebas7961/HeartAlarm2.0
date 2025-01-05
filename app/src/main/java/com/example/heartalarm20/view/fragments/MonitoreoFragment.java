@@ -34,7 +34,7 @@ public class MonitoreoFragment extends Fragment {
 
     private LineChart chart;
     private TextView tvAux;
-    private Button btVolver;
+    private Button btVolver, btTest;
 
     private BluetoothService bluetoothService;
     private boolean isBound = false;
@@ -45,6 +45,11 @@ public class MonitoreoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_monitoreo, container, false);
+
+        btTest = view.findViewById(R.id.bt_test_update);
+        btTest.setOnClickListener(v -> {
+            sharedViewModel.actualizarMonitoreoPulso((short) 75);
+        });
 
         // Inicializar UI
         chart = view.findViewById(R.id.chart);
@@ -100,16 +105,21 @@ public class MonitoreoFragment extends Fragment {
 
     // 📡 Observar datos desde SharedViewModel
     private void observeLiveData() {
-        sharedViewModel.getMonitoreoPulso().observe(getViewLifecycleOwner(), pulse -> {
+        sharedViewModel.getMonitoreoPulso().observe(requireActivity(), pulse -> {
             if (pulse != null) {
+                Log.d(TAG, "Pulso recibido: " + pulse);
                 updateChart(pulse);
                 tvAux.setText(String.valueOf(pulse));
+            } else {
+                Log.w(TAG, "Pulso es nulo.");
             }
         });
 
         sharedViewModel.getSignalStrength().observe(getViewLifecycleOwner(), signal -> {
             if (signal != null) {
                 Log.d(TAG, "Señal recibida: " + signal);
+            } else {
+                Log.w(TAG, "Señal es nula.");
             }
         });
     }
@@ -147,6 +157,7 @@ public class MonitoreoFragment extends Fragment {
         set.setDrawFilled(true);
         set.setFillAlpha(65);
         set.setFillColor(getResources().getColor(R.color.VerdeEKG));
+        set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         return set;
     }
 

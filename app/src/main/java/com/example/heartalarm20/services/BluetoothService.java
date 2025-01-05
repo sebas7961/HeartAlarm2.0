@@ -276,25 +276,40 @@ public class BluetoothService extends Service {
 
                 if (data.startsWith("Average BPM: ")) {
                     String bpmString = data.split("\n")[0].replaceAll("[^0-9]", "").trim();
-                    try {
-                        short bpmValue = Short.parseShort(bpmString);
-                        if (sharedViewModel != null) {
-                            sharedViewModel.actualizarMonitoreoPulso(bpmValue);
+
+                    if (!bpmString.isEmpty()) {
+                        try {
+                            short bpmValue = Short.parseShort(bpmString);
+                            if (sharedViewModel != null) {
+                                sharedViewModel.actualizarMonitoreoPulso(bpmValue);
+                            }
+                            updateFirestoreWithBPM(bpmValue);
+                            Log.d(TAG, "BPM recibido y actualizado: " + bpmValue);
+                        } catch (NumberFormatException e) {
+                            Log.e(TAG, "Error: BPM no es un número válido -> " + bpmString, e);
                         }
-                        updateFirestoreWithBPM(bpmValue);
-                        Log.d(TAG, "BPM recibido y actualizado: " + bpmValue);
-                    } catch (NumberFormatException e) {
-                        Log.e(TAG, "Error: BPM no es un número válido -> " + bpmString, e);
+                    } else {
+                        Log.w(TAG, "BPM vacío o inválido: " + bpmString);
                     }
                     return;
                 }
 
                 if (data.contains("S: ")) {
                     String signalString = data.split("\n")[0].replaceAll("[^0-9]", "").trim();
-                    if (sharedViewModel != null) {
-                        sharedViewModel.setSignalStrength(signalString);
+
+                    if (!signalString.isEmpty()) {
+                        try {
+                            short pulseValue = Short.parseShort(signalString); // Convertir a Short
+                            if (sharedViewModel != null) {
+                                sharedViewModel.actualizarMonitoreoPulso(pulseValue); // Actualizar el pulso
+                            }
+                            Log.d(TAG, "Pulso recibido y actualizado desde señal: " + pulseValue);
+                        } catch (NumberFormatException e) {
+                            Log.e(TAG, "Error al convertir señal a Short: " + signalString, e);
+                        }
+                    } else {
+                        Log.w(TAG, "Señal recibida vacía o no válida.");
                     }
-                    Log.d(TAG, "Señal recibida: " + signalString);
                     return;
                 }
 
@@ -306,16 +321,16 @@ public class BluetoothService extends Service {
         }
 
         private void showCallDialog(String data) {
-            Intent dialogIntent = new Intent(mContext, CallDialogActivity.class);
-            dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent dialogIntent = new Intent(getApplicationContext(), CallDialogActivity.class);
+            dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             dialogIntent.putExtra("pulso", data);
-            mContext.startActivity(dialogIntent);
+            startActivity(dialogIntent);
         }
 
         private void createNotification(String data) {
-            Intent intent = new Intent(BluetoothService.this, CallDialogActivity.class);
+            Intent intent = new Intent(getApplicationContext(), CallDialogActivity.class);
             intent.putExtra("pulso", data);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     BluetoothService.this,
