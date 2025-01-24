@@ -32,28 +32,28 @@ android {
 }
 
 dependencies {
+    // Firebase libraries con versiones compatibles
+    implementation ("com.google.firebase:firebase-firestore:24.6.0")
+    implementation ("com.google.firebase:firebase-database:20.2.1")
+    implementation ("com.google.firebase:firebase-messaging:23.2.1")
+
+    // Otras dependencias
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.4")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.4")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation("androidx.databinding:databinding-runtime:7.0.0")
+    implementation("com.airbnb.android:lottie:5.2.0")
+    implementation("androidx.core:core-ktx:1.12.0")
+
+    //Chart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.0.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    //test rama
-    implementation(libs.navigation.fragment.ktx)
-    implementation(libs.navigation.ui.ktx)
-
-    implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.lifecycle.livedata.ktx)
-
-    implementation(libs.databinding.runtime)
-
-    implementation(libs.google.firebase.firestore)
-
-    implementation(libs.core.ktx)
-
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.firestore)
-
 }

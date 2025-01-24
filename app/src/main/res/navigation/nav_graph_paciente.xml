@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/opcionesPacienteFragment">
+
+    <fragment
+        android:id="@+id/opcionesPacienteFragment"
+        android:name="com.example.heartalarm20.view.fragments.OpcionesPacienteFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_opcionespaciente">
+        <action
+            android:id="@+id/action_opcionesFragment_to_monitoreoFragment"
+            app:destination="@id/monitoreoFragment" />
+        <action
+            android:id="@+id/action_opcionesFragment_to_parametrosFragment"
+            app:destination="@id/parametrosFragment" />
+        <action
+            android:id="@+id/action_opcionesFragment_to_contactoEmergenciaFragment"
+            app:destination="@id/contactoEmergenciaFragment" />
+        <action
+            android:id="@+id/action_opcionesFragment_to_bluetoothtestFragment"
+            app:destination="@id/bluetoothTestFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/monitoreoFragment"
+        android:name="com.example.heartalarm20.view.fragments.MonitoreoFragment"
+        android:label="Monitoreo"
+        tools:layout="@layout/fragment_monitoreo" />
+    <fragment
+        android:id="@+id/parametrosFragment"
+        android:name="com.example.heartalarm20.view.fragments.ParametrosFragment"
+        android:label="Parámetros"
+        tools:layout="@layout/fragment_parametros" />
+    <fragment
+        android:id="@+id/contactoEmergenciaFragment"
+        android:name="com.example.heartalarm20.view.fragments.ContactosDeEmergenciaFragment"
+        android:label="Numero Emergencia"
+        tools:layout="@layout/fragment_contactosemergencia" />
+    <fragment
+        android:id="@+id/bluetoothTestFragment"
+        android:name="com.example.heartalarm20.view.fragments.BluetoothTestFragment"
+        android:label="BluetoothTestFragment"
+        tools:layout="@layout/fragment_bluetoothtest"
+        />
+
+
+</navigation>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/opcionesVigilante">
+
+    <fragment
+    android:id="@+id/opcionesVigilante"
+    android:name="com.example.heartalarm20.view.fragments.OpcionesVigilanteFragment"
+    android:label="Monitoreo"
+    tools:layout="@layout/fragment_opcionesvigilante">
+        <action
+            android:id="@+id/action_opcionesVigilante_to_monitoreoFragment"
+            app:destination="@id/monitoreoFragment" />
+        <action
+            android:id="@+id/action_opcionesVigilante_to_gestionPacientesFragment"
+            app:destination="@id/gestionPacientesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/monitoreoFragment"
+        android:name="com.example.heartalarm20.view.fragments.MonitoreoFragment"
+        android:label="Monitoreo"
+        tools:layout="@layout/fragment_monitoreo" />
+    <fragment
+        android:id="@+id/gestionPacientesFragment"
+        android:name="com.example.heartalarm20.view.fragments.GestionarPacientesFragment"
+        android:label="GestionPacientes"
+        tools:layout="@layout/fragment_gestionarpacientes" />
+
+</navigation>

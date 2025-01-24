@@ -9,17 +9,33 @@
         android:id="@+id/imageView"
         android:layout_width="450dp"
         android:layout_height="450dp"
-        android:layout_marginTop="430dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginTop="130dp"
         android:background="@drawable/logo_recordatorio">
-
     </ImageView>
+
+    <EditText
+        android:id="@+id/et_usuarioLogin"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Usuario"
+        android:layout_marginBottom="10dp"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/et_contraseñaLogin"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Contraseña"
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/btn_prueba"
         android:layout_width="wrap_content"
         android:layout_height="62dp"
-        android:layout_marginBottom="430dp"
-        android:backgroundTint="#EC1F2F"
-        android:text="Prueba"></Button>
+        android:layout_marginBottom="230dp"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="@color/rojoAlarm"
+        android:text="Ingresar"></Button>
 </LinearLayout>

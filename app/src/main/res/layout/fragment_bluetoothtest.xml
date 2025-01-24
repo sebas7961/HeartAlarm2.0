@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/statusBluetooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Estado Bluetooth: Desconectado"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/statusBPM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BPM: --"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/statusAlert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alerta: Ninguna"
+        android:textSize="18sp"/>
+
+    <Button
+        android:id="@+id/buttonConnect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Conectar Bluetooth"/>
+
+    <Button
+        android:id="@+id/buttonDisconnect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Desconectar Bluetooth"
+        android:layout_marginTop="8dp"/>
+
+</LinearLayout>
