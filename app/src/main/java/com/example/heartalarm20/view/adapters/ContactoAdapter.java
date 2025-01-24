@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.heartalarm20.model.entities.ContactoEmergencia;
 
 import com.example.heartalarm20.R;
-import com.example.heartalarm20.model.entities.ContactoEmergencia;
 
 import java.util.List;
 

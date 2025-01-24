@@ -22,6 +22,12 @@ public class LoginFragment extends Fragment {
 
         Button btnPrueba = view.findViewById(R.id.btn_prueba);
 
+        Button btnRegister = view.findViewById(R.id.btn_register);
+
+        btnRegister.setOnClickListener(v -> {
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
+        });
+
         btnPrueba.setOnClickListener(v ->
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_pacienteActivity)
         );
