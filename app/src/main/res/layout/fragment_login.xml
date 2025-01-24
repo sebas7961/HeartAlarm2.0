@@ -43,5 +43,12 @@
         android:backgroundTint="@color/rojoAlarm"
         android:text="Regístrate" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
 
 </LinearLayout>
