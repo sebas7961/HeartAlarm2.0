@@ -3,12 +3,14 @@ package com.example.heartalarm20.model.entities;
 public class Usuario {
     private String nombreUsuario;
     private String dni;
+    private String correo;
     private String password;
     private boolean isPaciente;
 
-    public Usuario(String nombreUsuario, String dni, String password, boolean isPaciente) {
+    public Usuario(String nombreUsuario, String dni, String correo, String password, boolean isPaciente) {
         this.nombreUsuario = nombreUsuario;
         this.dni = dni;
+        this.correo = correo;
         this.password = password;
         this.isPaciente = isPaciente;
     }
@@ -27,6 +29,14 @@ public class Usuario {
 
     public void setDni(String dni) {
         this.dni = dni;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     public String getPassword() {

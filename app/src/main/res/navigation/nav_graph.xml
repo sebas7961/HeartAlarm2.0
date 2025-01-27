@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_loginFragment_to_vigilanteActivity"
             app:destination="@id/vigilanteActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
     </fragment>
     <activity
         android:id="@+id/pacienteActivity"
@@ -25,6 +28,15 @@
         android:name="com.example.heartalarm20.VigilanteActivity"
         android:label="Vigilante"
         tools:layout="@layout/activity_vigilante" />
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.heartalarm20.view.fragments.RegisterFragment"
+        android:label="Registrar usuarios"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 
 <!--
     <fragment

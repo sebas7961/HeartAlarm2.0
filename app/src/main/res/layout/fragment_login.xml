@@ -9,9 +9,8 @@
         android:id="@+id/imageView"
         android:layout_width="450dp"
         android:layout_height="450dp"
-        android:layout_marginTop="130dp"
-        android:background="@drawable/logo_recordatorio">
-    </ImageView>
+        android:layout_marginTop="-50dp"
+        android:background="@drawable/logo_recordatorio"/>
 
     <EditText
         android:id="@+id/et_usuarioLogin"
@@ -34,8 +33,22 @@
         android:id="@+id/btn_prueba"
         android:layout_width="wrap_content"
         android:layout_height="62dp"
-        android:layout_marginBottom="230dp"
-        android:layout_marginTop="50dp"
         android:backgroundTint="@color/rojoAlarm"
-        android:text="Ingresar"></Button>
+        android:text="Ingresar" />
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="wrap_content"
+        android:layout_height="62dp"
+        android:backgroundTint="@color/rojoAlarm"
+        android:text="Regístrate" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+
 </LinearLayout>

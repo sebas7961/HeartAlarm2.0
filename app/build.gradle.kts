@@ -33,9 +33,13 @@ android {
 
 dependencies {
     // Firebase libraries con versiones compatibles
-    implementation ("com.google.firebase:firebase-firestore:24.6.0")
-    implementation ("com.google.firebase:firebase-database:20.2.1")
-    implementation ("com.google.firebase:firebase-messaging:23.2.1")
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-messaging")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
 
     // Otras dependencias
     implementation(libs.appcompat)
