@@ -31,6 +31,7 @@ public class FirebaseAuthRepository {
         FirebaseApp app = FirebaseApp.getInstance("HeartAlarmV2");
         auth = FirebaseAuth.getInstance(app);
         firestore = FirebaseFirestore.getInstance(app);
+
     }
 
     // 🔹 Registro de usuario con email, contraseña y datos adicionales
