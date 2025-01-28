@@ -33,4 +33,5 @@ public class MyApp extends Application {
             Log.e("MyApp", "Error al inicializar Firebase V2", e);
         }
     }
+
 }
