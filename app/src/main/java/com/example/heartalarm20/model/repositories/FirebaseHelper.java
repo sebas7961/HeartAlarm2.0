@@ -1,15 +1,20 @@
 package com.example.heartalarm20.model.repositories;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
+import com.example.heartalarm20.MyApp;
 import com.example.heartalarm20.model.entities.ContactoEmergencia;
 import com.google.firebase.FirebaseApp;
 //import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -85,5 +90,40 @@ public class FirebaseHelper {
                     }
                 })
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
+    }
+
+    public void verificarContactosVigilantes(List<ContactoEmergencia> contactos, ContactosRepository.RepositoryCallback<List<ContactoEmergencia>> callback, Context context) {
+        List<String> vigilantesUIDs = new ArrayList<>();
+        List<ContactoEmergencia> contactosActualizados = new ArrayList<>(contactos);
+
+        for (ContactoEmergencia contacto : contactos) {
+            db.collection("vigilantes")
+                    .whereEqualTo("numero", contacto.getNumero()) // Filtramos por número
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                String uid = document.getId(); // El ID del documento es el UID del usuario
+                                vigilantesUIDs.add(uid);
+
+                                // Marcar al contacto como vigilante registrado
+                                contacto.setVigilante(true);
+                                contacto.setUidVigilante(uid);
+                            }
+                        }
+                        // Llamar al callback con los datos actualizados
+                        callback.onSuccess(contactosActualizados);
+                        // Guardar los UID en SharedPreferences
+                        guardarVigilantesLocalmente(vigilantesUIDs, context);
+                    })
+                    .addOnFailureListener(e -> callback.onError("Error al verificar contactos: " + e.getMessage()));
+        }
+    }
+
+    private void guardarVigilantesLocalmente(List<String> vigilantesUIDs, Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("HeartAlarmPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putStringSet("vigilantesRegistrados", new HashSet<>(vigilantesUIDs));
+        editor.apply();
     }
 }

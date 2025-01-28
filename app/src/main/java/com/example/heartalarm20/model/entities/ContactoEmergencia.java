@@ -7,6 +7,8 @@ public class ContactoEmergencia {
     private String numero;
     private String prioridad;
     private String nombre;
+    private boolean isVigilante;
+    private String uidVigilante;
 
     public ContactoEmergencia(String id, String numero, String nombre, String prioridad) {
         this.numero = numero;
@@ -63,5 +65,21 @@ public class ContactoEmergencia {
     @Override
     public int hashCode() {
         return Objects.hash(id, numero, prioridad, nombre);
+    }
+
+    public boolean isVigilante() {
+        return isVigilante;
+    }
+
+    public void setVigilante(boolean vigilante) {
+        isVigilante = vigilante;
+    }
+
+    public String getUidVigilante() {
+        return uidVigilante;
+    }
+
+    public void setUidVigilante(String uidVigilante) {
+        this.uidVigilante = uidVigilante;
     }
 }

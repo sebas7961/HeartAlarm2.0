@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.heartalarm20.model.entities.Usuario;
+import com.example.heartalarm20.model.entities.UsuarioBD;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -50,6 +51,7 @@ public class FirebaseAuthRepository {
     // 🔹 Guardar usuario en Firestore según su rol (Paciente / Vigilante)
     private void saveUserToFirestore(String userId, Usuario usuario) {
         String collection = usuario.isPaciente() ? "Paciente" : "Vigilante";
+        UsuarioBD usuarioBD = new UsuarioBD(usuario);
 
         firestore.collection(collection).document(userId)
                 .set(usuario)
@@ -61,6 +63,8 @@ public class FirebaseAuthRepository {
                     Log.e(TAG, "Error al guardar usuario en Firestore", e);
                     _isUserRegistered.postValue(false);
                 });
+
+        //GUARDAR USUARIO?
     }
 
     // 🔹 Iniciar sesión con email y contraseña

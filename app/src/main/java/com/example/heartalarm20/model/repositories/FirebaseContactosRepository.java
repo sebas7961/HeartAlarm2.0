@@ -23,4 +23,11 @@ public class FirebaseContactosRepository implements ContactosRepository {
     public void obtenerContactos(RepositoryCallback<List<ContactoEmergencia>> callback) {
         firebaseHelper.obtenerContactos(callback);
     }
+
+    @Override
+    public void verificarContactosVigilantes(List<ContactoEmergencia> contactos, RepositoryCallback<List<ContactoEmergencia>> callback, Context context) {
+        firebaseHelper.verificarContactosVigilantes(contactos, callback, context);
+    }
+
+
 }

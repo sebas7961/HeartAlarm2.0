@@ -124,4 +124,18 @@ public class ContactosViewModel extends ViewModel {
         }
     }
 
+    public void verificarContactosVigilantes(List<ContactoEmergencia> contactos) {
+        repository.verificarContactosVigilantes(contactos, new ContactosRepository.RepositoryCallback<List<ContactoEmergencia>>() {
+            @Override
+            public void onSuccess(List<ContactoEmergencia> result) {
+                contactosList.setValue(result);
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e("ContactosViewModel", "Error al verificar contactos: " + error);
+            }
+        }, context);
+    }
+
 }
