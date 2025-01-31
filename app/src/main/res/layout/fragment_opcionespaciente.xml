@@ -32,15 +32,6 @@
         android:backgroundTint="@color/rojoAlarm"
         android:layout_height="wrap_content"
         android:text="Monitoreo" />
-<!--
-    <Button
-        android:id="@+id/btn_gestionar_pacientes"
-        android:layout_width="240dp"
-        android:layout_marginBottom="4dp"
-        android:backgroundTint="@color/rojoAlarm"
-        android:layout_height="wrap_content"
-        android:text="Gestionar Pacientes" />
-        -->
     <Button
         android:id="@+id/btn_parametros"
         android:layout_width="240dp"
@@ -62,11 +53,6 @@
         android:layout_marginBottom="4dp"
         android:backgroundTint="@color/verdeBoton"
         android:text="Conectar Dispositivo" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="enviar notificacion"
-        android:id="@+id/btn_notificador"/>
 
 
 </LinearLayout>

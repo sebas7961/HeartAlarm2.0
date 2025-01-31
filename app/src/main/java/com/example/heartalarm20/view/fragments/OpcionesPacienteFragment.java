@@ -41,8 +41,6 @@ public class OpcionesPacienteFragment extends Fragment {
         Button btnParametros = view.findViewById(R.id.btn_parametros);
         Button btnNEmergencia = view.findViewById(R.id.btn_NEmergencia);
         Button btnConectarDispositivo = view.findViewById(R.id.btn_ConectarDispositivo);
-        Button btnNotificacion = view.findViewById(R.id.btn_notificador);
-        btnNotificacion.setOnClickListener(v->notificar());
 /*
         authViewModel.getRol().observe(getViewLifecycleOwner(), rol -> {
             if ("Paciente".equals(rol)) {
@@ -85,26 +83,4 @@ public class OpcionesPacienteFragment extends Fragment {
         return view;
     }
 
-    public void notificar(){
-        Log.d("NotificacionesOpciones", "holasiprobando");
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("HeartAlarmPrefs", Context.MODE_PRIVATE);
-        Set<String> vigilantesRegistrados =sharedPreferences.getStringSet("vigilantesRegistrados", new HashSet<>());
-        List<String> tokens=new ArrayList<>();
-        int b = 0;
-        Log.d("NotificacionesOpciones", "Size: "+vigilantesRegistrados.size());
-        for(String userID : vigilantesRegistrados){
-            FirebaseTokenHelper.obtenerTokenDesdeFirestore(userID, new FirebaseTokenHelper.FirestoreCallback() {
-                @Override
-                public void onCallback(String token) {
-                    tokens.add(token);
-                    if(vigilantesRegistrados.size()==b+1){
-                        Log.d("NotificacionesOpcionesOnCallbak", "holasiprobando444");
-                        EventoNotificacion.enviarEvento("alerta", "holabola", tokens);
-                        //NotificationSender.enviarNotificacion(tokens, "Alerta prueba", "noseah", getContext());
-                    }
-                }
-            });
-        }
-
-    }
 }

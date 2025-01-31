@@ -11,6 +11,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
@@ -20,10 +21,13 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.heartalarm20.R;
+import com.example.heartalarm20.model.api.EventoNotificacion;
+import com.example.heartalarm20.model.repositories.FirebaseTokenHelper;
 import com.example.heartalarm20.view.activities.CallDialogActivity;
 import com.example.heartalarm20.viewmodel.SharedViewModel;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -35,9 +39,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class BluetoothService extends Service {
 
@@ -268,6 +279,7 @@ public class BluetoothService extends Service {
                         }
                         mainHandler.post(() -> showCallDialog(bpm));
                         createNotification(data);
+                        notificar();
                         playAlertSound();
                     });
                     Log.d(TAG, "Alerta detectada: " + bpm);
@@ -379,6 +391,35 @@ public class BluetoothService extends Service {
             } catch (NumberFormatException e) {
                 Log.e(TAG, "Formato de BPM inválido", e);
             }
+        }
+    }
+    public void notificar(){
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("HeartAlarmPrefs", Context.MODE_PRIVATE);
+        Set<String> vigilantesRegistrados =sharedPreferences.getStringSet("vigilantesRegistrados", new HashSet<>());
+        String numero = sharedPreferences.getString("numero", "911");
+        List<String> tokens=new ArrayList<>();
+        int b = 0;
+        Log.d("NotificacionesOpciones", "Size: "+vigilantesRegistrados.size());
+        for(String userID : vigilantesRegistrados){
+            FirebaseTokenHelper.obtenerTokenDesdeFirestore(userID, new FirebaseTokenHelper.FirestoreCallback() {
+                @Override
+                public void onCallback(String token) {
+                    tokens.add(token);
+                    if(vigilantesRegistrados.size()==b+1){
+                        EventoNotificacion.enviarEvento("alerta", "holabola", tokens, new Callback() {
+                            @Override
+                            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                                //aquí le meten el GSM
+                            }
+
+                            @Override
+                            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+                            }
+                        });
+                    }
+                }
+            });
         }
     }
 }

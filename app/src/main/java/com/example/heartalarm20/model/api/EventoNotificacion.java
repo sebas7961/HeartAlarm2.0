@@ -11,7 +11,7 @@ public class EventoNotificacion {
 
     private static final String BACKEND_URL = "http://192.168.18.33:5000/enviar-notificacion";
 
-    public static void enviarEvento(String titulo, String mensaje, List<String> tokens) {
+    public static void enviarEvento(String titulo, String mensaje, List<String> tokens, Callback callback) {
         OkHttpClient client = new OkHttpClient();
 
         int index = 0;
@@ -38,11 +38,13 @@ public class EventoNotificacion {
             @Override
             public void onFailure(Call call, IOException e) {
                 // Maneja el error
+                callback.onFailure(call, e);
                 Log.d("EventoNotificacion", "EnvíoFallido1\n"+ e.getMessage() + "\n"+ call.toString());
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                callback.onResponse(call, response);
                 if (response.isSuccessful()) {
                     Log.d("EventoNotificacion", "EnvíoExitoso\n"+ response);
                 } else {

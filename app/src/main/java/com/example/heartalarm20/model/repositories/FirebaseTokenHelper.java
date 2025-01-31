@@ -13,14 +13,13 @@ public class FirebaseTokenHelper {
     private static final String TAG = "FirebaseTokenHelper";
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance(FirebaseApp.getInstance());
 
-    public static void obtenerYGuardarTokenFCM(String userId, Context context) {
+    public static void obtenerYGuardarTokenFCM(String userId, Context context, String coleccion) {
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
                         Log.e("FirebaseTokenHelper", "Error al obtener el token FCM", task.getException());
                         return;
                     }
-
                     String token = task.getResult();
                     Log.d("FirebaseTokenHelper", "Token FCM obtenido: " + token);
 
@@ -30,7 +29,7 @@ public class FirebaseTokenHelper {
                     Map<String, Object> tokenMap = new HashMap<>();
                     tokenMap.put("fcmToken", token);
 
-                    db.collection("Vigilante").document(userId)
+                    db.collection(coleccion).document(userId)
                             .update(tokenMap)
                             .addOnSuccessListener(aVoid -> Log.d("FirebaseTokenHelper", "Token FCM guardado en Firestore"))
                             .addOnFailureListener(e -> Log.e("FirebaseTokenHelper", "Error al guardar token", e));

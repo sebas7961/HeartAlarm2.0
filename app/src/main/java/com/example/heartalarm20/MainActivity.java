@@ -65,14 +65,15 @@ public class MainActivity extends AppCompatActivity {
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
                             Log.d("MainActivity", "Usuario encontrado en la colección 'Paciente'");
+                            FirebaseTokenHelper.obtenerYGuardarTokenFCM(currentUser.getUid(), this, "Paciente");
                             startActivity(new Intent(this, PacienteActivity.class));
                             finish();
                         } else {
                             db.collection("Vigilante").document(currentUser.getUid()).get()
                                     .addOnSuccessListener(vigilanteSnapshot -> {
                                         if (vigilanteSnapshot.exists()) {
+                                            FirebaseTokenHelper.obtenerYGuardarTokenFCM(currentUser.getUid(), this, "Vigilante");
                                             // 🔹 Ahora solo llamamos a la versión única del método
-                                            FirebaseTokenHelper.obtenerYGuardarTokenFCM(currentUser.getUid(), this);
                                             Log.d("MainActivity", "Usuario encontrado en la colección 'Vigilante'");
                                             startActivity(new Intent(this, VigilanteActivity.class));
                                             finish();
