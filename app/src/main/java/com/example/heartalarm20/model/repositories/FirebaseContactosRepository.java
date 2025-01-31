@@ -1,6 +1,7 @@
 package com.example.heartalarm20.model.repositories;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.heartalarm20.model.entities.ContactoEmergencia;
 
@@ -11,7 +12,7 @@ public class FirebaseContactosRepository implements ContactosRepository {
     private final FirebaseHelper firebaseHelper;
 
     public FirebaseContactosRepository() {
-        this.firebaseHelper = new FirebaseHelper("72608730");
+        this.firebaseHelper = new FirebaseHelper(FirebaseAuthHelper.userID);
     }
 
     @Override
@@ -25,9 +26,9 @@ public class FirebaseContactosRepository implements ContactosRepository {
     }
 
     @Override
-    public void verificarContactosVigilantes(List<ContactoEmergencia> contactos, RepositoryCallback<List<ContactoEmergencia>> callback, Context context) {
-        firebaseHelper.verificarContactosVigilantes(contactos, callback, context);
+    public void verificarContactosVigilantes(String numero, RepositoryCallback<String> callback, Context context) {
+        Log.d("FirebaseContactos", numero);
+        firebaseHelper.verificarContactosVigilantes(numero, callback, context);
     }
-
 
 }

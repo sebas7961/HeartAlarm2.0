@@ -9,7 +9,7 @@ import java.util.List;
 public interface ContactosRepository {
     void guardarContactos(List<ContactoEmergencia> contactos, RepositoryCallback<Void> callback);
     void obtenerContactos(RepositoryCallback<List<ContactoEmergencia>> callback);
-    void verificarContactosVigilantes(List<ContactoEmergencia> contactos, ContactosRepository.RepositoryCallback<List<ContactoEmergencia>> callback, Context context);
+    void verificarContactosVigilantes(String numero, ContactosRepository.RepositoryCallback<String> callback, Context context);
 
     interface RepositoryCallback<T> {
         void onSuccess(T result);

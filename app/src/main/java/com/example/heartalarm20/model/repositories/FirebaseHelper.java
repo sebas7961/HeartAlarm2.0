@@ -1,18 +1,25 @@
 package com.example.heartalarm20.model.repositories;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.heartalarm20.MyApp;
 import com.example.heartalarm20.model.entities.ContactoEmergencia;
+import com.example.heartalarm20.model.entities.Usuario;
+import com.example.heartalarm20.model.entities.UsuarioBD;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 //import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,9 +30,8 @@ public class FirebaseHelper {
     private final String userId;
 
     public FirebaseHelper(String userId) {
-        FirebaseApp app = FirebaseApp.getInstance("HeartAlarmV2");
-        db = FirebaseFirestore.getInstance(app);
-        this.userId = userId;
+        db = FirebaseFirestore.getInstance();
+        this.userId = FirebaseAuthHelper.userID;
         //userId = FirebaseAuth.getInstance().getCurrentUser() != null ?
         //        FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
     }
@@ -74,56 +80,71 @@ public class FirebaseHelper {
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        List<Map<String, Object>> contactosList = (List<Map<String, Object>>) documentSnapshot.get("ContactosEmergencia");
-                        List<ContactoEmergencia> contactos = new java.util.ArrayList<>();
-                        if (contactosList != null) {
-                            for (Map<String, Object> contacto : contactosList) {
-                                contactos.add(new ContactoEmergencia(
-                                        (String) contacto.get("IdContacto"),
-                                        (String) contacto.get("NumeroContacto"),
-                                        (String) contacto.get("NombreContacto"),
-                                        (String) contacto.get("Prioridad")
-                                ));
+                        if(documentSnapshot.contains("ContactosEmergencia")){
+                            List<Map<String, Object>> contactosList = (List<Map<String,java.lang.Object>>) documentSnapshot.get("ContactosEmergencia");
+                            List<ContactoEmergencia> contactos = new java.util.ArrayList<>();
+                            if (contactosList != null) {
+                                for (Map<String, Object> contacto : contactosList) {
+                                    contactos.add(new ContactoEmergencia(
+                                            (String) contacto.get("IdContacto"),
+                                            (String) contacto.get("NumeroContacto"),
+                                            (String) contacto.get("NombreContacto"),
+                                            (String) contacto.get("Prioridad")
+                                    ));
+                                }
                             }
+                            callback.onSuccess(contactos);
                         }
-                        callback.onSuccess(contactos);
                     }
                 })
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
     }
 
-    public void verificarContactosVigilantes(List<ContactoEmergencia> contactos, ContactosRepository.RepositoryCallback<List<ContactoEmergencia>> callback, Context context) {
-        List<String> vigilantesUIDs = new ArrayList<>();
-        List<ContactoEmergencia> contactosActualizados = new ArrayList<>(contactos);
-
-        for (ContactoEmergencia contacto : contactos) {
-            db.collection("vigilantes")
-                    .whereEqualTo("numero", contacto.getNumero()) // Filtramos por número
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        if (!queryDocumentSnapshots.isEmpty()) {
-                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                                String uid = document.getId(); // El ID del documento es el UID del usuario
-                                vigilantesUIDs.add(uid);
-
-                                // Marcar al contacto como vigilante registrado
-                                contacto.setVigilante(true);
-                                contacto.setUidVigilante(uid);
-                            }
+    public void verificarContactosVigilantes(String numero, ContactosRepository.RepositoryCallback<String> callback, Context context) {
+        Log.e("FirebaseHelper", "número: "+numero);
+        db.collection("Vigilante")
+                .whereEqualTo("numero", numero) // Filtramos por número
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            Log.e("FirebaseHelperOnSuccess", "ID del número en Firestore: " + document.getId());
+                            callback.onSuccess(document.getId()); // El ID del documento es el UID del usuario
                         }
-                        // Llamar al callback con los datos actualizados
-                        callback.onSuccess(contactosActualizados);
-                        // Guardar los UID en SharedPreferences
-                        guardarVigilantesLocalmente(vigilantesUIDs, context);
-                    })
-                    .addOnFailureListener(e -> callback.onError("Error al verificar contactos: " + e.getMessage()));
-        }
+                    }
+                })
+                .addOnFailureListener(e -> callback.onError("Error al verificar contactos: " + e.getMessage()));
+
     }
 
-    private void guardarVigilantesLocalmente(List<String> vigilantesUIDs, Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("HeartAlarmPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putStringSet("vigilantesRegistrados", new HashSet<>(vigilantesUIDs));
-        editor.apply();
+    // 🔹 Guardar usuario en Firestore según su rol (Paciente / Vigilante)
+    public void saveUserToFirestore(String userId, Usuario usuario, AuthRepository.RepositoryCallback<Boolean> callback) {
+        String collection = usuario.isPaciente() ? "Paciente" : "Vigilante";
+
+        UsuarioBD usuarioBD = new UsuarioBD(usuario);
+        db.collection("Usuarios").document(userId).set(usuarioBD).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d(TAG, "Usuario guardado en Firestore Usuario");
+            }
+        });
+
+        db.collection(collection).document(userId)
+                .set(usuario)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Usuario guardado en Firestore");
+                    callback.onSuccess(true);
+
+                    //_isUserRegistered.postValue(true);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error al guardar usuario en Firestore", e);
+                    callback.onError(false);
+                    //_isUserRegistered.postValue(false);
+                });
+
+        //GUARDAR USUARIO?
     }
+
+
 }

@@ -2,6 +2,7 @@ package com.example.heartalarm20.view.fragments;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import androidx.navigation.Navigation;
 
 import com.example.heartalarm20.R;
 import com.example.heartalarm20.viewmodel.LoginViewModel;
+import com.google.firebase.FirebaseApp;
 
 public class LoginFragment extends Fragment {
 
@@ -39,7 +41,13 @@ public class LoginFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
 
         // 🔹 Inicializar ViewModel
-        loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+        if (FirebaseApp.getApps(requireContext()).isEmpty()) {
+            FirebaseApp.initializeApp(requireContext());
+            Log.e("asmdamsda", "gaaaaa");
+            loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+        } else {
+            loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
+        }
 
         // 🔹 Observar cambios en ViewModel
         observeViewModel(view);

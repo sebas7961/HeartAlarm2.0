@@ -62,6 +62,11 @@
         android:layout_marginBottom="4dp"
         android:backgroundTint="@color/verdeBoton"
         android:text="Conectar Dispositivo" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="enviar notificacion"
+        android:id="@+id/btn_notificador"/>
 
 
 </LinearLayout>

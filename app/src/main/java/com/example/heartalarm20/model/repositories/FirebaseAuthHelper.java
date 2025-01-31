@@ -1,22 +1,22 @@
 package com.example.heartalarm20.model.repositories;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.heartalarm20.model.entities.Usuario;
-import com.example.heartalarm20.model.entities.UsuarioBD;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-public class FirebaseAuthRepository {
+public class FirebaseAuthHelper {
 
-    private static final String TAG = "FirebaseAuthRepository";
+    private static final String TAG = "FirebaseAuthHelper";
     private final FirebaseAuth auth;
-    private final FirebaseFirestore firestore;
+    private final FirebaseHelper firebaseHelper;
+    public static String userID;
 
     // LiveData para registro y login
     private final MutableLiveData<Boolean> _isUserRegistered = new MutableLiveData<>();
@@ -28,11 +28,13 @@ public class FirebaseAuthRepository {
     private final MutableLiveData<String> _loginError = new MutableLiveData<>();
     public LiveData<String> loginError = _loginError;
 
-    public FirebaseAuthRepository() {
-        FirebaseApp app = FirebaseApp.getInstance("HeartAlarmV2");
-        auth = FirebaseAuth.getInstance(app);
-        firestore = FirebaseFirestore.getInstance(app);
-
+    public FirebaseAuthHelper() {
+//        if (FirebaseApp.getApps(context).isEmpty()) {
+//            FirebaseApp.initializeApp(context);
+//            Log.d(TAG, "Firebase inicializado dentro de FirebaseAuthHelper");
+//        }
+        auth = FirebaseAuth.getInstance();
+        firebaseHelper = new FirebaseHelper(auth.getUid());
     }
 
     // 🔹 Registro de usuario con email, contraseña y datos adicionales
@@ -40,32 +42,24 @@ public class FirebaseAuthRepository {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        String userId = auth.getCurrentUser().getUid();
-                        saveUserToFirestore(userId, usuario);
+                        userID = auth.getCurrentUser().getUid();
+                        firebaseHelper.saveUserToFirestore(userID, usuario, new AuthRepository.RepositoryCallback<Boolean>() {
+                            @Override
+                            public void onSuccess(Boolean result) {
+                                _isUserRegistered.postValue(true);
+                               // FirebaseTokenHelper.obtenerYGuardarTokenFCM(userID);
+                            }
+
+                            @Override
+                            public void onError(Boolean error) {
+                                _isUserRegistered.postValue(false);
+                            }
+                        });
                     } else {
                         Log.e(TAG, "Error en registro: ", task.getException());
                         _isUserRegistered.postValue(false);
                     }
                 });
-    }
-
-    // 🔹 Guardar usuario en Firestore según su rol (Paciente / Vigilante)
-    private void saveUserToFirestore(String userId, Usuario usuario) {
-        String collection = usuario.isPaciente() ? "Paciente" : "Vigilante";
-        UsuarioBD usuarioBD = new UsuarioBD(usuario);
-
-        firestore.collection(collection).document(userId)
-                .set(usuario)
-                .addOnSuccessListener(aVoid -> {
-                    Log.d(TAG, "Usuario guardado en Firestore");
-                    _isUserRegistered.postValue(true);
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "Error al guardar usuario en Firestore", e);
-                    _isUserRegistered.postValue(false);
-                });
-
-        //GUARDAR USUARIO?
     }
 
     // 🔹 Iniciar sesión con email y contraseña
@@ -75,6 +69,7 @@ public class FirebaseAuthRepository {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "Inicio de sesión exitoso");
                         _isUserLoggedIn.postValue(true);
+//                        FirebaseTokenHelper.obtenerYGuardarTokenFCM(userID);
                     } else {
                         Log.e(TAG, "Error en inicio de sesión", task.getException());
                         _loginError.postValue("Error en autenticación. Verifique su usuario y contraseña.");

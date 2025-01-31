@@ -13,15 +13,17 @@ import com.example.heartalarm20.model.repositories.ContactosRepository;
 import com.example.heartalarm20.model.repositories.FirebaseContactosRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactosViewModel extends ViewModel {
     private final MutableLiveData<List<ContactoEmergencia>> contactosList = new MutableLiveData<>(new ArrayList<>());
-    private final FirebaseContactosRepository repository;
+    private final FirebaseContactosRepository repositoryContactos;
     private Context context;
 
     public ContactosViewModel() {
-        this.repository  = new FirebaseContactosRepository();
+        this.repositoryContactos = new FirebaseContactosRepository();
         cargarContactos();
     }
 
@@ -35,10 +37,13 @@ public class ContactosViewModel extends ViewModel {
     }
 
     private void cargarContactos() {
-        repository.obtenerContactos(new ContactosRepository.RepositoryCallback<List<ContactoEmergencia>>() {
+        repositoryContactos.obtenerContactos(new ContactosRepository.RepositoryCallback<List<ContactoEmergencia>>() {
             @Override
             public void onSuccess(List<ContactoEmergencia> result) {
                 contactosList.setValue(result);
+                for(ContactoEmergencia contactoEmergencia : result){
+                    verificarContactosVigilantes(contactoEmergencia.getNumero());
+                }
             }
 
             @Override
@@ -50,6 +55,7 @@ public class ContactosViewModel extends ViewModel {
 
     public void agregarContacto(ContactoEmergencia contacto) {
         List<ContactoEmergencia> currentList = contactosList.getValue();
+        contacto.setNumero(contacto.getNumero().replace(" ", ""));
         assert currentList != null;
         if (currentList.isEmpty()) {
             contacto.setPrioridad("Principal");
@@ -59,15 +65,17 @@ public class ContactosViewModel extends ViewModel {
             editor.apply();
         }
         currentList.add(contacto);
-        repository.guardarContactos(currentList, new ContactosRepository.RepositoryCallback<Void>() {
+        repositoryContactos.guardarContactos(currentList, new ContactosRepository.RepositoryCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                 contactosList.setValue(new ArrayList<>(currentList)); // Clonar lista antes de setValue
+                verificarContactosVigilantes(contacto.getNumero());
+                Log.e("Contacto Guardado", "gogymgogym");
             }
 
             @Override
             public void onError(String error) {
-                Log.e("ContactosViewModel", "Error al guardar contacto");
+                Log.e("ContactosViewModel", "Error al guardar contacto" + error);
             }
         });
     }
@@ -92,7 +100,7 @@ public class ContactosViewModel extends ViewModel {
             currentList.get(position).setPrioridad(newPriority);
         }
 
-        repository.guardarContactos(currentList, new ContactosRepository.RepositoryCallback<Void>() {
+        repositoryContactos.guardarContactos(currentList, new ContactosRepository.RepositoryCallback<Void>() {
             @Override
             public void onSuccess(Void result) {
                 contactosList.setValue(new ArrayList<>(currentList)); // Clonar para garantizar LiveData update
@@ -110,7 +118,7 @@ public class ContactosViewModel extends ViewModel {
         List<ContactoEmergencia> currentList = new ArrayList<>(contactosList.getValue());
         if (currentList != null && index >= 0 && index < currentList.size()) {
             currentList.remove(index);
-            repository.guardarContactos(currentList, new ContactosRepository.RepositoryCallback<Void>() {
+            repositoryContactos.guardarContactos(currentList, new ContactosRepository.RepositoryCallback<Void>() {
                 @Override
                 public void onSuccess(Void result) {
                     contactosList.setValue(new ArrayList<>(currentList)); // Clonar lista antes de setValue
@@ -124,18 +132,31 @@ public class ContactosViewModel extends ViewModel {
         }
     }
 
-    public void verificarContactosVigilantes(List<ContactoEmergencia> contactos) {
-        repository.verificarContactosVigilantes(contactos, new ContactosRepository.RepositoryCallback<List<ContactoEmergencia>>() {
+    public void verificarContactosVigilantes(String numero) {
+        Log.e("VerificacionContactosViewModel", numero);
+        repositoryContactos.verificarContactosVigilantes(numero, new ContactosRepository.RepositoryCallback<String>() {
             @Override
-            public void onSuccess(List<ContactoEmergencia> result) {
-                contactosList.setValue(result);
+            public void onSuccess(String result) {
+                Log.e("OnSuccessRepositoryVerificar", "result:" + result);
+
+                guardarVigilantesLocalmente(result);
             }
 
             @Override
             public void onError(String error) {
-                Log.e("ContactosViewModel", "Error al verificar contactos: " + error);
+                Log.e("ContactosNoVerificadosgg", error);
             }
         }, context);
     }
 
+    private void guardarVigilantesLocalmente(String uidnuevo) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("HeartAlarmPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Set<String> vigilantesRegistrados =sharedPreferences.getStringSet("vigilantesRegistrados", new HashSet<>());
+        List<String> olasi = new ArrayList<>(vigilantesRegistrados);
+        olasi.add(uidnuevo);
+        Log.e("asdasd", uidnuevo + olasi.size());
+        editor.putStringSet("vigilantesRegistrados", new HashSet<>(olasi));
+        editor.apply();
+    }
 }

@@ -2,6 +2,7 @@ package com.example.heartalarm20.view.fragments;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,9 @@ import androidx.navigation.Navigation;
 
 import com.example.heartalarm20.R;
 import com.example.heartalarm20.model.entities.Usuario;
+import com.example.heartalarm20.viewmodel.LoginViewModel;
 import com.example.heartalarm20.viewmodel.RegisterViewModel;
+import com.google.firebase.FirebaseApp;
 
 public class RegisterFragment extends Fragment {
 
@@ -34,7 +37,14 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
-        registerViewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
+        if (FirebaseApp.getApps(requireContext()).isEmpty()) {
+            FirebaseApp.initializeApp(requireContext());
+            Log.e("asmdamsda", "gaaaaa");
+            registerViewModel = new ViewModelProvider(requireActivity()).get(RegisterViewModel.class);
+        } else {
+            registerViewModel = new ViewModelProvider(requireActivity()).get(RegisterViewModel.class);
+        }
+
 
         etName = view.findViewById(R.id.et_name);
         etDni = view.findViewById(R.id.et_dni);
