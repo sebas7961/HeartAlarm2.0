@@ -16,7 +16,6 @@ import androidx.navigation.Navigation;
 
 import com.example.heartalarm20.R;
 import com.example.heartalarm20.model.api.EventoNotificacion;
-import com.example.heartalarm20.model.api.NotificationSender;
 import com.example.heartalarm20.model.repositories.FirebaseTokenHelper;
 import com.example.heartalarm20.viewmodel.AuthViewModel;
 
