@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -184,13 +185,27 @@ public class BluetoothService extends Service {
         if (outputStream != null) {
             try {
                 outputStream.write(data.getBytes());
+                outputStream.flush();
+                Log.d(TAG, "Mensaje enviado: " + data);
                 return true;
             } catch (IOException e) {
-                Log.e(TAG, "Error sending data", e);
+                Log.e(TAG, "Error al enviar datos", e);
                 return false;
             }
+        } else {
+            Log.e(TAG, "No hay conexión Bluetooth, no se pudo enviar: " + data);
+            return false;
         }
-        return false;
+    }
+
+    public void sendErrorMessage() {
+        boolean enviado = sendData("error");
+
+        if (!enviado) {
+            Log.e(TAG, "No se pudo enviar el mensaje de error vía Bluetooth.");
+        } else {
+            Log.d(TAG, "Mensaje de error enviado correctamente.");
+        }
     }
 
     private void startListeningForData() {
@@ -409,7 +424,9 @@ public class BluetoothService extends Service {
                         EventoNotificacion.enviarEvento("alerta", "holabola", tokens, new Callback() {
                             @Override
                             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                                //aquí le meten el GSM
+                                Log.e("HTTP_ERROR", "Error en la solicitud: " + e.getMessage());
+                                sendErrorMessage();
+
                             }
 
                             @Override
@@ -422,4 +439,5 @@ public class BluetoothService extends Service {
             });
         }
     }
+
 }

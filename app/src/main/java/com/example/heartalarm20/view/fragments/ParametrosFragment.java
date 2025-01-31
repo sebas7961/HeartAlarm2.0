@@ -119,6 +119,8 @@ public class ParametrosFragment extends Fragment {
         }
     }
 
+
+
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
